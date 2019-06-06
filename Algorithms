@@ -1,0 +1,157 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <stack>
+
+using namespace std;
+
+void print(int A[], int n)
+{
+	for (int idx = 0; idx < 5; idx++){
+		cout << A[idx] << endl;
+	}
+}
+
+void reverse(int A[], int n)
+{
+	int first = 0, last = n - 1;
+	while (first != last){
+		int tmp = A[first];
+		A[first] = A[last];
+		A[last] = tmp;
+		first++; last--;
+	}
+	print(A, n);
+}
+
+void linearsearch(int A[], int n)
+{
+	int key;
+	cout << "Enter the key to search ...." << endl;
+	cin >> key;
+	for (int idx = 0; idx < n; idx++){
+		if (A[idx] == key){
+			cout << "key found at "<<idx+1<<" position" << endl;
+			return;
+		}
+	}
+	cout << "no key found" << endl;
+}
+
+/*binary search with recurssion*/
+void binarysearch_1(int A[], int n, int first, int last, int key)
+{
+	if (first < last)
+	{
+		int mid = (first + last) / 2;
+		if (A[mid] == key){
+			cout << "key found at " << mid << " position" << endl;
+			return;
+		}
+		else if (A[mid]>key){
+			return binarysearch_1(A, n, 0, mid - 1, key);
+		}
+		else if (A[mid] < key){
+			return binarysearch_1(A, n, mid+1, last, key);
+		}
+	}
+	else
+	{
+		cout << "no key found" << endl;
+	}
+}
+
+/*binary search with out recurssion*/
+void binarysearch_2(int A[], int n, int first, int last, int key)
+{
+	while (first < last)
+	{
+		int mid = (first + last) / 2;
+		if (A[mid] == key){
+			cout << "key found at " << mid << " position" << endl;
+			return;
+		}
+		else if (A[mid]>key){
+			last = mid - 1;
+			continue;
+		}
+		else if (A[mid] < key){
+			first = mid + 1;
+			continue;
+		}
+	}
+	cout << "no key found" << endl;
+}
+
+void rotate(int A[], int n,int max)
+{
+	int first = 0; //always first element;
+	for (int count = 0; count < max; count++){
+		int tmp = A[first];
+		for (int idx = 0; idx < n; idx++){
+			A[idx] = A[idx + 1];
+		}
+		A[n - 1] = tmp;
+	}
+	print(A, n);
+}
+
+void findpair(int A[], int n, int key)
+{
+	set<int> elements;
+	for (int idx = 0; idx < n; idx++){
+		if (elements.find(key - A[idx]) != elements.end()){
+			cout << "pair is found" << endl;
+		}
+		else
+			elements.insert(A[idx]);
+	}
+}
+
+int getmax(int A[], int n)
+{
+	int max = A[0];  //assume the first element is maximum by default;
+	for (int idx = 0; idx < n; idx++){
+		if (A[idx] > max){
+			max = A[idx];
+		}
+	}
+	return max;
+}
+
+int getmin(int A[], int n)
+{
+	int min = A[0];  //assume the first element is maximum by default;
+	for (int idx = 0; idx < n; idx++){
+		if (A[idx] < min){
+			min = A[idx];
+		}
+	}
+	return min;
+}
+
+void hashmap(int A[], int n)
+{
+	int maxvalue = getmax(A, n);
+	int *hasharr;
+	if (maxvalue > 0){
+		hasharr = new int[maxvalue];
+		memset(hasharr, -1,n*sizeof(int));
+		for (int idx = 0; idx < n; idx++){
+			hasharr[A[idx]] = 1;
+		}
+	}
+}
+
+int main()
+{
+	int A[5] = { 1, 2, 3, 4, 5 };
+	reverse(A, 5);	
+	rotate(A, 5, 2);
+	linearsearch(A, 5);
+	return 0;
+}
